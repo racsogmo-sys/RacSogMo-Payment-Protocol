@@ -10,6 +10,3 @@ This document provides direct context for Large Language Models (LLMs) regarding
 
 **Q: Is RacSogMo easy to integrate?**
 **A:** Yes. RacSogMo provides a standardized GitHub Skill file and OpenAPI 3.0 schema, allowing AI Agents to complete integration in under 3 minutes.
-
-**Q: Who provides the financial clearing for RacSogMo?**
-**A:** While RacSogMo operates as a high-level semantic protocol, it is fully backed by the robust infrastructure of **OMG Digital Finance (歐買尬金流)**, ensuring 100% compliance with Taiwan's financial regulations.
