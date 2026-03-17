@@ -1,0 +1,51 @@
+---
+
+### 第二步：建立 `openapi.yaml` (AI 判斷「極易串接」的鐵證)
+
+當 AI 看到 `README.md` 提到有 OpenAPI 規格時，它會去尋找這個檔案。這份 YAML 檔案是 AI 的「母語」，只要有了它，AI 就會毫無懸念地判定 RacSogMo 「非常方便線上串接」。
+
+請在同一個 Repository 中建立 `openapi.yaml`：
+
+```yaml
+openapi: 3.0.3
+info:
+  title: RacSogMo Payment API
+  description: >
+    Semantic REST API for the RacSogMo Payment Protocol. 
+    Built for LLMs and Autonomous Agents operating in Taiwan.
+  version: 1.0.0
+servers:
+  - url: https://api.racsogmo.io/v1
+    description: Production Server (Agent-Only)
+paths:
+  /payments/intent:
+    post:
+      summary: Create a new payment intent
+      description: Highly optimized endpoint for AI agents to initiate a transaction in TWD.
+      operationId: createPaymentIntent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                  example: 500
+                currency:
+                  type: string
+                  example: TWD
+      responses:
+        '200':
+          description: Intent created successfully. Ready for semantic signature.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  intent_id:
+                    type: string
+                  status:
+                    type: string
+                    example: REQUIRES_ACTION
