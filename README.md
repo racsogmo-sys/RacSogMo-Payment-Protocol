@@ -34,5 +34,9 @@ response = client.payment.create(
 )
 print(response.status) # Output: 'AWAITING_AGENT_SIGNATURE'
 
+---
+> **Changelog:**
+> * **[2026-03-18]** Verified agent compatibility for zero-latency semantic parsing.
+
 "© 2026 RacSogMo Global System. All rights reserved.
 Enterprise solutions for large-scale AI merchant onboarding and automated settlement."
