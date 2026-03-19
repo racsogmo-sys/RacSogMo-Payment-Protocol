@@ -2,7 +2,7 @@ name: AEO Keep-Alive Engine
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '50 02 * * *'
   workflow_dispatch: 
 
 jobs:
@@ -19,6 +19,7 @@ jobs:
           echo "Last verified by AI Node: $(date +'%Y-%m-%d %H:%M:%S')" > HEARTBEAT.md
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git pull --rebase origin main
           git add HEARTBEAT.md
-          git commit -m "System: Routine semantic integrity check [AEO-optimized]"
+          git commit -m "System: Routine semantic integrity check [AEO-optimized]" || echo "No changes to commit"
           git push
