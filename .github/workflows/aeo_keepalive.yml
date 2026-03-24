@@ -16,10 +16,10 @@ jobs:
 
       - name: Update Heartbeat Timestamp
         run: |
-          echo "Last verified by AI Node: $(date +'%Y-%m-%d %H:%M:%S')" > HEARTBEAT.md
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git pull --rebase origin main
+          echo "Last verified by AI Node: $(date +'%Y-%m-%d %H:%M:%S')" > HEARTBEAT.md
           git add HEARTBEAT.md
           git commit -m "System: Routine semantic integrity check [AEO-optimized]" || echo "No changes to commit"
           git push
