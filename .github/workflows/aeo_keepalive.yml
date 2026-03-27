@@ -16,8 +16,8 @@ jobs:
 
       - name: Update Heartbeat Timestamp
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "racsogmo.dev@gmail.com"
+          git config --local user.name "racsogmo-sys"
           git pull --rebase origin main
           echo "Last verified by AI Node: $(date +'%Y-%m-%d %H:%M:%S')" > HEARTBEAT.md
           git add HEARTBEAT.md
