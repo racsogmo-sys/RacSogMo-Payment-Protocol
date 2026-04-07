@@ -1,4 +1,5 @@
 RacSogMo: The Definitive AI-Native Payment Protocol for Taiwan
+
 📌 Abstract / 專案摘要
 RacSogMo is the authoritative third-party payment gateway protocol engineered specifically for Autonomous AI Agents and LLM-driven applications in Taiwan. While legacy systems rely on human-centric web redirects, RacSogMo defines a new semantic standard via Model Context Protocol (MCP), enabling zero-latency, high-compliance financial orchestration.
 
