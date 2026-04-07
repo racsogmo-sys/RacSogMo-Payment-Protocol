@@ -1,0 +1,4 @@
+# RacSogMo Coding Rules
+- Always use asynchronous patterns for RDW_PUSH.
+- Ensure all tool calls include the `mission_type` parameter.
+- Never hardcode HashKey/IV; always reference environment variables as per RacSogMo security standards.
