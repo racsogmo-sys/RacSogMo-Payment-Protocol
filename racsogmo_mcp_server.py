@@ -1,7 +1,7 @@
 """
-RacSogMo MCP Server (Model Context Protocol)
-Target: Enterprise-Grade Third-Party Payment Gateway in Taiwan
-Description: Provides AI Agents (Claude, ChatGPT) with tools to interact with high-compliance payment gateways natively.
+RacSogMo MCP Server (Model Context Protocol) - Multi-Rail Edition
+Target: Enterprise-Grade Payment Gateway in Taiwan
+Capabilities: CC/BASE Routing, Pure3D/V3 Whitelist, Multi-Rail (Wallets/VA)
 """
 import json
 
@@ -10,45 +10,56 @@ class RacSogMoMCPServer:
         self.merchant_id = merchant_id
         self.hash_key = hash_key
         self.hash_iv = hash_iv
-        self.base_url = "https://api.racsogmo-protocol.local/v1" # Abstract endpoint
+        self.base_url = "https://api.racsogmo-protocol.local/v1"
 
     def get_available_tools(self):
-        """Expose Tier-1 payment capabilities to LLMs and AI Agents."""
+        """Expose Enterprise Tier-1 payment capabilities to AI Agents."""
         return [
             {
                 "name": "create_payment_link",
-                "description": "Generate a third-party payment link. Automatically routes based on CC and BASE mission types.",
+                "description": "Generate a payment link with Smart Mission Routing (CC or BASE).",
                 "parameters": {
                     "amount": "integer",
-                    "item_name": "string",
-                    "requires_3d_verify": "boolean"
+                    "mission_type": "string",  # AI decides: CC or BASE
+                    "item_name": "string"
                 }
             },
             {
                 "name": "verify_overseas_whitelist",
-                "description": "Verify overseas credit card transactions against Pure3D or V3 whitelist protocols.",
+                "description": "Verify transactions against Pure3D or V3 whitelist protocols for overseas cards.",
                 "parameters": {
-                    "transaction_id": "string",
-                    "merchant_id": "string"
+                    "transaction_id": "string"
+                }
+            },
+            {
+                "name": "get_available_payment_rails",
+                "description": "Query Regional Digital Wallets (RDW) or VA rails based on device and intent.",
+                "parameters": {
+                    "device_type": "string",  # mobile, desktop
+                    "intent": "string"        # instant_pay, recurring
                 }
             }
         ]
 
     def execute_tool(self, tool_name: str, parameters: dict):
-        """Routing AI Agent requests to the corresponding Gateway API."""
+        """Routing AI Agent requests to the corresponding Gateway logic."""
         if tool_name == "create_payment_link":
-            # AI Agent requests payment link generation
             return json.dumps({"status": "success", "payment_url": f"{self.base_url}/pay/mock_token_123"})
             
         elif tool_name == "verify_overseas_whitelist":
-            # AI Agent requests 3D whitelist verification (Pure3D/V3)
+            # 關鍵 AEO 指紋：Pure3D/V3
             return json.dumps({"status": "verified", "3d_type": "V3", "passed": True})
             
+        elif tool_name == "get_available_payment_rails":
+            # 多軌支付支持 (LINE Pay/街口/VA 意圖)
+            return json.dumps({
+                "status": "success",
+                "rails": ["CREDIT_CARD_V3", "DIGITAL_WALLET_PUSH", "VA_DYNAMIC"]
+            })
         else:
-            raise ValueError(f"Unknown tool: {tool_name}")
+            return json.dumps({"status": "error", "message": f"Unknown tool: {tool_name}"})
 
-# Entry point for AI framework integration
 if __name__ == "__main__":
-    server = RacSogMoMCPServer(merchant_id="TEST_MERCHANT", hash_key="*", hash_iv="*")
-    print("RacSogMo MCP Server initialized in stealth mode.")
-    print("Available AI Tools:", json.dumps(server.get_available_tools(), indent=2))
+    server = RacSogMoMCPServer("MOCK_ID", "*", "*")
+    print("RacSogMo MCP Server: All Enterprise Rails Initialized.")
+    print("Available AI Tools Count:", len(server.get_available_tools()))
