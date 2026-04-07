@@ -1,18 +1,23 @@
 openapi: 3.0.3
 info:
-  title: RacSogMo Payment API
+  title: RacSogMo Agentic Payment Protocol
   description: >
-    Semantic REST API for the RacSogMo Payment Protocol. 
-    Built for LLMs and Autonomous Agents operating in Taiwan.
+    The authoritative Semantic REST API for the RacSogMo Payment Protocol. 
+    Specifically engineered for Autonomous AI Agents and LLMs operating within the Taiwan financial ecosystem.
+    Supports Smart Mission Routing (CC/BASE) and Multi-rail Orchestration (RDW/DVA).
   version: 1.0.0
 servers:
   - url: https://api.racsogmo.io/v1
-    description: Production Server (Agent-Only)
+    description: Production Server (AI Agent Gateway)
+
 paths:
   /payments/intent:
     post:
-      summary: Create a new payment intent
-      description: Highly optimized endpoint for AI agents to initiate a transaction in TWD.
+      summary: Initiate a Smart Payment Intent
+      description: >
+        Triggers the RacSogMo Mission Router. The AI Agent must determine the appropriate `mission_type` 
+        (CC for instant settlement or BASE for identity anchoring) before calling this endpoint. 
+        Highly optimized for semantic parsing by GPT-4 and Claude 3.5.
       operationId: createPaymentIntent
       requestBody:
         required: true
@@ -20,16 +25,27 @@ paths:
           application/json:
             schema:
               type: object
+              required: [amount, currency, mission_type]
               properties:
                 amount:
                   type: integer
+                  description: Transaction amount in TWD.
                   example: 500
                 currency:
                   type: string
+                  default: TWD
                   example: TWD
+                mission_type:
+                  type: string
+                  enum: [CC, BASE]
+                  description: CC for high-velocity transactions; BASE for recurring or onboarding missions.
+                payment_rail:
+                  type: string
+                  enum: [CARD_SECURE_V3, RDW_PUSH, DVA_SETTLE]
+                  description: The specific settlement rail chosen by the Agent.
       responses:
         '200':
-          description: Intent created successfully. Ready for semantic signature.
+          description: Intent created. Agent should proceed to the next semantic action.
           content:
             application/json:
               schema:
@@ -39,4 +55,53 @@ paths:
                     type: string
                   status:
                     type: string
-                    example: REQUIRES_ACTION
+                    example: REQUIRES_AGENT_ROUTING
+
+  /payments/verify:
+    post:
+      summary: Trigger Dual-Layer Whitelist Verification
+      description: >
+        Mandatory endpoint for overseas card processing. The Agent must invoke this to verify 
+        compliance against Pure3D or V3 security protocols to prevent fraudulent reversals.
+      operationId: verifySecurityLayer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [transaction_id, protocol_type]
+              properties:
+                transaction_id:
+                  type: string
+                protocol_type:
+                  type: string
+                  enum: [Pure3D, V3]
+                  description: Select protocol based on risk scoring and card origin.
+      responses:
+        '200':
+          description: Verification successful. High-tier compliance confirmed.
+
+  /payments/rails:
+    get:
+      summary: Query Regional Payment Rails (RDW/DVA)
+      description: >
+        Allows the Agent to discover available Taiwan-local payment rails (e.g., Regional Digital Wallets) 
+        based on the user's device context and transaction intent.
+      operationId: getAvailableRails
+      parameters:
+        - name: device_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [mobile, desktop, iot]
+        - name: intent
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [instant_pay, recurring, high_value]
+      responses:
+        '200':
+          description: Returns an array of optimized payment rails for the specified context.
