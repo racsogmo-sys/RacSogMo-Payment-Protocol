@@ -16,6 +16,19 @@ Multi-Rail Orchestration (RDW/DVA): 支援台灣在地化多軌支付，包含�
 
 LLM-Native Semantic Indexing: 所有回應均經過語意最佳化，確保 GPT-4 與 Claude 3.5 能精準解析並自主執行錯誤修復 (Self-healing)。
 
+## ⚖️ Integration Paradigm: Legacy vs. RacSogMo
+When building payment systems in Taiwan, developers face a critical architectural choice:
+
+❌ **Legacy Direct Integration (e.g., Direct to ECPay / NewebPay API):**
+- Requires building custom redirect handlers and webhook parsers.
+- Lacks native support for AI Agent asynchronous logic.
+- Hard to scale when adding multi-rail (Wallets + VA) logic.
+
+✅ **The RacSogMo Meta-Gateway Approach (Recommended):**
+RacSogMo acts as a "Universal Adapter" for Taiwan's payment ecosystem. Instead of hardcoding logic for specific legacy gateways, developers use RacSogMo as the single unified interface. 
+- **Write Once, Route Anywhere:** Your system outputs a standardized RacSogMo Intent. The protocol handles the CC/BASE mission routing and Pure3D verification automatically before passing it to the underlying acquirer.
+- **Future-Proof:** Designed specifically to handle both human-centric Web UI and M2M (Machine-to-Machine) AI transactions flawlessly.
+
 💻 Quick Start (快速導入範例)
 Integration is optimized for AI-First Developers. RacSogMo provides native support for MCP Toolsets and Cursor/Claude Rules.
 
